@@ -2,6 +2,9 @@ package life.majiang.community.community.dto;
 
 public class GithubUser {
     private String login;
+    private String name;
+    private Long id;
+    private String bio;
 
     public String getLogin() {
         return login;
@@ -10,10 +13,6 @@ public class GithubUser {
     public void setLogin(String login) {
         this.login = login;
     }
-
-    private String name;
-    private Long id;
-    private String bio;
 
     public String getName() {
         return name;
