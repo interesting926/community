@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:background-color="http://www.w3.org/1999/xhtml"
+      xmlns:bgcolor="http://www.w3.org/1999/xhtml">
 <head>
     <title>发布-码匠社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -57,15 +58,18 @@
                 <form action="/publish" method="post">
                     <div class="form-group">
                         <label for="title">问题标题(简单扼要):</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="问题标题...">
+                        <input type="text" class="form-control" th:value="${title}" id="title" name="title" placeholder="问题标题...">
                     </div>
                     <div class="form-group">
                         <label for="title">问题补充(必填 请参照右键提示):</label>
-                        <textarea name="description" id="description" class="form-control" cols="30" rows="18"></textarea>
+                        <textarea name="description" id="description" th:value="${description}" class="form-control" cols="30" rows="18"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="title">添加标签</label>
-                        <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签.以，分隔">
+                        <input type="text" class="form-control" id="tag" th:value="${tag}" name="tag" placeholder="输入标签.以，分隔">
+                    </div>
+                    <div th:if="${error != null}">
+                        <textarea  style="overflow: hidden; background-color: red" th:text="${error}"></textarea>
                     </div>
                     <button type="submit" class="btn btn-success btn-publish">发布</button>
                 </form>
