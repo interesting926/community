@@ -40,8 +40,8 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDTO> questionDTOList = questionService.findList();
-        model.addAttribute("questionDTOList",questionDTOList);
+        List<QuestionDTO> questions = questionService.findList();
+        model.addAttribute("questions",questions);
         return "index";
     }
 }
