@@ -1,10 +1,10 @@
-package life.majiang.community.community.mode;
+package life.majiang.community.community.dto;
 
+import life.majiang.community.community.mode.User;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
 
 @Data
-public class Question {
+public class QuestionDTO {
     private  Integer id;
     private String title;
     private String description;
@@ -15,5 +15,5 @@ public class Question {
     private Integer view_count;
     private Integer like_count;
     private  String tag;
-
+    private User user;
 }
