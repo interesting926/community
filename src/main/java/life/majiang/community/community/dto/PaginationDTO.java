@@ -16,28 +16,15 @@ public class PaginationDTO {
     private Integer totalPage;
     private List<Integer> pages = new ArrayList<>();
 
-    public void setPagination(Integer totalCount, Integer size, Integer page) {
+    public void setPagination(Integer totalPage, Integer size, Integer page) {
 
         this.page = page;
-        if (totalCount %size ==0){
-            this.totalPage = totalCount /size;
-        }else{
-            this.totalPage = totalCount /size+1;
-        }
-
-        if (page <1){
-            page=1;
-        }
-        if (page> this.totalPage){
-            page = this.totalPage;
-        }
-
         pages.add(page);
         for(int i=1;i<=3;i++){
             if (page-i>0){
                 pages.add(0,page-i);
             }
-            if (page+i <= this.totalPage){
+            if (page+i <= totalPage){
                 pages.add(page+i);
             }
         }
@@ -46,7 +33,7 @@ public class PaginationDTO {
         }else{
             showPrevious = true;
         }
-        if (page == this.totalPage){
+        if (page == totalPage){
             showNext = false;
         }else{
             showNext = true;
@@ -57,7 +44,7 @@ public class PaginationDTO {
         }else {
             showFirstPage = true;
         }
-        if (pages.contains(this.totalPage)){
+        if (pages.contains(totalPage)){
             showEndPage = false;
         }else {
             showEndPage = true;
