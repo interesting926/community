@@ -22,3 +22,12 @@ body{
     font-weight: normal;
     color: #999;
 }
+.question-title{
+    margin-top: 25px;
+}
+
+.text-desc {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
