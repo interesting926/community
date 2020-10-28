@@ -6,6 +6,7 @@ import life.majiang.community.community.mapper.QuestionMapper;
 import life.majiang.community.community.mapper.UserMapper;
 import life.majiang.community.community.mode.Question;
 import life.majiang.community.community.mode.User;
+import life.majiang.community.community.mode.UserExample;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,13 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage,size,page);
 
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
+/*            User user = new User();
+            UserExample example = new UserExample();
+            example.createCriteria()
+                    .andIdEqualTo(question.getCreator());
+            List<User> users = userMapper.selectByExample(example);
+            user=users.get(0);*/
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
@@ -79,7 +86,13 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage,size,page);
 
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+/*            User user = new User();
+            UserExample example = new UserExample();
+            example.createCriteria()
+                    .andIdEqualTo(question.getCreator());
+            List<User> users = userMapper.selectByExample(example);
+            user=users.get(0);*/
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
@@ -94,8 +107,12 @@ public class QuestionService {
         QuestionDTO questionDTO = new QuestionDTO();
         Question question = questionMapper.findById(id);
         BeanUtils.copyProperties(question,questionDTO);
-        User user = userMapper.findById(question.getCreator());
-        questionDTO.setUser(user);
+//        User user = userMapper.findById(question.getCreator());
+        UserExample example = new UserExample();
+        example.createCriteria()
+                .andIdEqualTo(question.getCreator());
+        List<User> users = userMapper.selectByExample(example);
+        questionDTO.setUser(users.get(0));
         return questionDTO;
     }
 

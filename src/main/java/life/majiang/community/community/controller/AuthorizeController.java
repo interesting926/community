@@ -4,6 +4,7 @@ import life.majiang.community.community.dto.AccessTokenDTO;
 import life.majiang.community.community.dto.GithubUser;
 import life.majiang.community.community.mapper.UserMapper;
 import life.majiang.community.community.mode.User;
+import life.majiang.community.community.mode.UserExample;
 import life.majiang.community.community.provider.GithubProvider;
 import life.majiang.community.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -59,7 +61,7 @@ public class AuthorizeController {
             Long id = githubUser.getId();
             String Sid = String.valueOf(id);
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setAvatarurl(githubUser.getAvatar_url());
+            user.setAvatarUrl(githubUser.getAvatar_url());
             userService.creatOrUpdate(user);
             response.addCookie(new Cookie("token",token));
             return "redirect:/";
