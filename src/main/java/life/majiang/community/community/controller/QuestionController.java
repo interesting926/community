@@ -22,15 +22,10 @@ public class QuestionController {
     @GetMapping("/question")
     public String question(@RequestParam("id")Integer id,
                            Model model){
-        Question question = questionMapper.findById(id);
-        if (question != null){
-            QuestionDTO questionDTO = questionService.findByid(id);
-            model.addAttribute("question",questionDTO);
-            return "question";
-        }else {
-            model.addAttribute("error","不存在这个问题");
-            return "redirect:/";
-        }
+        QuestionDTO questionDTO = questionService.findByid(id);
+        questionService.incView(id);
+        model.addAttribute("question", questionDTO);
+        return "question";
     }
 
 }

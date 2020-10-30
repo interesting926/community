@@ -12,5 +12,5 @@
 [Git](https://git-scm.com/download)
 [Visual Paradigm](https://www.visual-paradigm.com/cn/)
 
-#mybatis generation 迁移
-#mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+mybatis generation 迁移
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
