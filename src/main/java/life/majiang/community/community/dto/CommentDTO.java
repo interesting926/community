@@ -1,10 +1,18 @@
 package life.majiang.community.community.dto;
 
+import life.majiang.community.community.mode.User;
 import lombok.Data;
 
 @Data
 public class CommentDTO {
-    private Long parentID;
-    private String connet;
+    private Long id;
+    private Long parentId;
     private Integer type;
+    private Long commentator;
+    private Long gmtCreat;
+    private Long gmtModified;
+    private Long likeCount;
+    private String content;
+    private Integer commentCount;
+    private User user;
 }

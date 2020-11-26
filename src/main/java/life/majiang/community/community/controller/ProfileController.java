@@ -40,10 +40,10 @@ public class ProfileController {
         if (user == null){
             return "redirect:/";
         }
-        if ("action".equals(action)){
-            model.addAttribute("section", "questions");
+        if ("question".equals(action)){
+            model.addAttribute("section", "question");
             model.addAttribute("sectionName", "我的提问");
-            Integer userid = user.getId();
+            long userid = user.getId();
             PaginationDTO pagination = questionService.findList(userid,page,size);
             model.addAttribute("pagination",pagination);
         }else if ("replies".equals(action)){

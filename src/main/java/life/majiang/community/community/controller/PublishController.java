@@ -1,9 +1,11 @@
 package life.majiang.community.community.controller;
 
+import life.majiang.community.community.cache.TagCache;
 import life.majiang.community.community.dto.QuestionDTO;
 import life.majiang.community.community.mode.Question;
 import life.majiang.community.community.mode.User;
 import life.majiang.community.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,25 +33,28 @@ public class PublishController {
         model.addAttribute("description",questionDTO.getDescription());
         model.addAttribute("tag",questionDTO.getTag());
         model.addAttribute("id",questionDTO.getId());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @GetMapping("/publish")
-    public String publish(){
+    public String publish(Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @PostMapping("/publish")
     public String publish(
-            @RequestParam("title")String title,
-            @RequestParam("description")String description,
-            @RequestParam("tag")String tag,
-            @RequestParam(value = "id")Integer id ,
+            @RequestParam(value = "title",required = false)String title,
+            @RequestParam(value = "description", required = false)String description,
+            @RequestParam(value = "tag", required = false)String tag,
+            @RequestParam(value = "id",required = false)Long id,
             HttpServletRequest request,
             Model model){
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
+        model.addAttribute("tags", TagCache.get());
         if ((title == null) || (title == "")) {
             model.addAttribute("error", "标题不能为空");
             return "publish";
@@ -60,6 +65,11 @@ public class PublishController {
         }
         if ((tag == null) || (tag == "")) {
             model.addAttribute("error", "标签不能为空");
+            return "publish";
+        }
+        String invalid = TagCache.filterInvalid(tag);
+        if (StringUtils.isNoneBlank(invalid)){
+            model.addAttribute("error", "输入非法标签"+invalid);
             return "publish";
         }
         User user = (User) request.getSession().getAttribute("user");

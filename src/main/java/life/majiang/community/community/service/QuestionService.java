@@ -11,13 +11,16 @@ import life.majiang.community.community.mode.Question;
 import life.majiang.community.community.mode.QuestionExample;
 import life.majiang.community.community.mode.User;
 import life.majiang.community.community.mode.UserExample;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -34,11 +37,10 @@ public class QuestionService {
     public PaginationDTO findList(Integer page, Integer size){
         Integer offset = size *(page-1);
         ArrayList<QuestionDTO> questionDTOList = new ArrayList();
-//        List<Question> questions = questionMapper.findList(offset,size);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
-
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("GMT_CREATE desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
         PaginationDTO paginationDTO = new PaginationDTO();
-//        Integer totalCount = questionMapper.Count();
         Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
         Integer totalPage;
         if (totalCount %size ==0){
@@ -54,7 +56,6 @@ public class QuestionService {
             page=paginationDTO.getTotalPage();
         }
         paginationDTO.setPagination(totalPage,size,page);
-
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -67,7 +68,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO findList(Integer userid, Integer page, Integer size) {
+    public PaginationDTO findList(long userid, Integer page, Integer size) {
         Integer offset = size *(page-1);
         ArrayList<QuestionDTO> questionDTOList = new ArrayList();
 //        List<Question> questions = questionMapper.findUserList(userid,offset,size);
@@ -106,10 +107,9 @@ public class QuestionService {
         }
         paginationDTO.setQuestions(questionDTOList);
         return paginationDTO;
-
     }
 
-    public QuestionDTO findByid(Integer id) {
+    public QuestionDTO findByid(long id) {
         QuestionDTO questionDTO = new QuestionDTO();
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null){
@@ -126,7 +126,8 @@ public class QuestionService {
             //新建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.insert(question);
+            //questionMapper.insert(question);
+            questionMapper.insertSelective(question);
         }else{
             //更新
             Question updateQustion = new Question();
@@ -144,11 +145,31 @@ public class QuestionService {
         }
     }
 
-    public void incView(Integer id) {
+    public void incView(long id) {
 
         Question question = new Question();
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+
+        if (StringUtils.isBlank(queryDTO.getTag())){
+            return  new ArrayList<>();
+        }
+        String[] tags = StringUtils.split(queryDTO.getTag(),",");
+        String regexpTags = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(regexpTags);
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return  questionDTOS;
     }
 }
