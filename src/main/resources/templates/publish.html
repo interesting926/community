@@ -6,10 +6,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
     <link rel="stylesheet" href="/css/community.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
@@ -25,18 +28,32 @@
                     <input type="text" class="form-control" th:value="${title}" id="title" name="title"
                            placeholder="问题标题..." autocomplete="off">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="editor">
                     <label for="title">问题补充(必填 请参照右键提示):</label>
                     <textarea name="description" id="description" th:text="${description}" class="form-control"
                               cols="30" rows="18"></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("editor", {
+                            width: "100%",
+                            height: 350,
+                            delay: 0,
+                            path: "/js/lib/",  // Autoload modules mode, codemirror, marked... dependents libs path
+                            imageUpload: true,
+                            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL: "/file/upload",
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="title">添加标签</label>
                     <input type="text" class="form-control" id="tag" th:value="${tag}" name="tag"
                            placeholder="输入标签.以，分隔" autocomplete="off" onclick="showSelectTag()">
                     <div id="select-tag" class="publish-tag-tab">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first ? 'active':''}" >
+                            <li role="presentation" th:each="selectCategory,selectCategoryStat: ${tags}"
+                                th:class="${selectCategoryStat.first ? 'active':''}">
                                 <a th:href="${'#'+selectCategory.categoryName}" aria-controls="home" role="tab"
                                    data-toggle="tab" th:text="${selectCategory.categoryName}">
                                 </a>
@@ -44,8 +61,9 @@
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" th:id="${selectCategory.categoryName}"
-                                 th:each="selectCategory,selectCategoryStat: ${tags}" th:class="${selectCategoryStat.first ? 'active tab-pane':'tab-pane'}">
-                                <span class="label label-info" th:each="selectTag:${selectCategory.tags}" >
+                                 th:each="selectCategory,selectCategoryStat: ${tags}"
+                                 th:class="${selectCategoryStat.first ? 'active tab-pane':'tab-pane'}">
+                                <span class="label label-info" th:each="selectTag:${selectCategory.tags}">
                                     <span class="glyphicon glyphicon-tags" onclick="selectTag(this)"
                                           th:data-tag="${selectTag}"
                                           th:text="${' '+selectTag}">
