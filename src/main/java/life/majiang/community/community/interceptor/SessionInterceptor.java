@@ -5,6 +5,7 @@ import life.majiang.community.community.dto.GithubUser;
 import life.majiang.community.community.mapper.UserMapper;
 import life.majiang.community.community.mode.User;
 import life.majiang.community.community.mode.UserExample;
+import life.majiang.community.community.service.NotificationService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,6 +25,10 @@ public class SessionInterceptor implements HandlerInterceptor{
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -36,9 +41,10 @@ public class SessionInterceptor implements HandlerInterceptor{
                     userExample.createCriteria()
                             .andTokenEqualTo(token);
                     List<User> users = userMapper.selectByExample(userExample);
-//                    User user = userMapper.findByToken(token);
                     if (users.size() !=0) {
                         request.getSession().setAttribute("user", users.get(0));
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }
