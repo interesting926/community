@@ -2,6 +2,7 @@ package life.majiang.community.community.service;
 
 import life.majiang.community.community.dto.PaginationDTO;
 import life.majiang.community.community.dto.QuestionDTO;
+import life.majiang.community.community.dto.QuestionQueryDTO;
 import life.majiang.community.community.exception.CustomizeErrorCode;
 import life.majiang.community.community.exception.CustomizeException;
 import life.majiang.community.community.mapper.QuestionExtMapper;
@@ -34,15 +35,20 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO findList(Integer page, Integer size){
-        Integer offset = size *(page-1);
-        ArrayList<QuestionDTO> questionDTOList = new ArrayList();
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("GMT_CREATE desc");
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+    public PaginationDTO findList(String search,Integer page, Integer size){
+
+        if (StringUtils.isNoneBlank(search)){
+            String[] tags = search.split(" ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+//        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = (int)questionExtMapper.countBySearch(questionQueryDTO);
         Integer totalPage;
+
         if (totalCount %size ==0){
             totalPage = totalCount /size;
         }else{
@@ -55,6 +61,16 @@ public class QuestionService {
         if (page> paginationDTO.getTotalPage()){
             page=paginationDTO.getTotalPage();
         }
+        Integer offset = size *(page-1);
+        ArrayList<QuestionDTO> questionDTOList = new ArrayList();
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("GMT_CREATE desc");
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(page);
+        questionQueryDTO.setOffset(offset);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
+//        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));//可以查到description
+
         paginationDTO.setPagination(totalPage,size,page);
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
