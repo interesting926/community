@@ -71,7 +71,8 @@ www.mawen.co
 
     mvn flyway:migrate
     mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
-
+    ~/.m2/setting.xml(需要搜maven配置的  吧pom.xml 里面的profile配置包裹起来 maven.apache.org/settings.html)
+    mvn clean compile flyway:migrate -Production(-P 配置数据里${db.user}等信息)
 扩展资料
 
 Spring 文档    

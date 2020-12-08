@@ -61,6 +61,7 @@ public class QuestionService {
         if (page> paginationDTO.getTotalPage()){
             page=paginationDTO.getTotalPage();
         }
+        if (page ==0)   page=1;
         Integer offset = size *(page-1);
         ArrayList<QuestionDTO> questionDTOList = new ArrayList();
         QuestionExample questionExample = new QuestionExample();
