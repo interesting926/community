@@ -15,30 +15,18 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="life.majiang.community.community.mode" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="life.majiang.community.community.mode" targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src\main\resources">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="life.majiang.community.community.mapper"  targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="life.majiang.community.community.mapper"  targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
-        <!--<javaModelGenerator targetPackage="life.majiang.community.community.mode" targetProject="src\main\java">-->
-            <!--<property name="enableSubPackages" value="true" />-->
-            <!--<property name="trimStrings" value="true" />-->
-        <!--</javaModelGenerator>-->
-
-        <!--<sqlMapGenerator targetPackage="mapper"  targetProject="src\main\resources">-->
-            <!--<property name="enableSubPackages" value="true" />-->
-        <!--</sqlMapGenerator>-->
-
-        <!--<javaClientGenerator type="XMLMAPPER" targetPackage="life.majiang.community.community.mapper"  targetProject="src\main\java">-->
-            <!--<property name="enableSubPackages" value="true" />-->
-        <!--</javaClientGenerator>-->
 
         <table tableName="user" domainObjectName="User" ></table>
         <table tableName="question" domainObjectName="Question" ></table>
