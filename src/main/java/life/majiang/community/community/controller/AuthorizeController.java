@@ -4,7 +4,6 @@ import life.majiang.community.community.dto.AccessTokenDTO;
 import life.majiang.community.community.dto.GithubUser;
 import life.majiang.community.community.mapper.UserMapper;
 import life.majiang.community.community.mode.User;
-import life.majiang.community.community.mode.UserExample;
 import life.majiang.community.community.provider.GithubProvider;
 import life.majiang.community.community.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
