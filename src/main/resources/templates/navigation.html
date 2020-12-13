@@ -42,7 +42,10 @@
                         </ul>
                     </li>
                     <li th:if="${session.user == null}">
-                        <a th:href="@{https://github.com/login/oauth/authorize(client_id='d9172662240eda14dc8d',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">
+                        <!--<a th:href="${#httpServletRequest.getLocalName()}"> </a>-->
+                        <a>
+                            <a th:href="@{/login}">
+                           <!--<a href="https://github.com/login/oauth/authorize?client_id=d9172662240eda14dc8d&redirect_uri=http://localhost:8887/callback&scope=user&state=1">-->
                             <h4>登陆</h4></a>
                         </a>
                     </li>
