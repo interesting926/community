@@ -1,6 +1,7 @@
 package life.majiang.community.community.controller;
 
 import com.alibaba.fastjson.JSON;
+import life.majiang.community.community.common.ModelView;
 import life.majiang.community.community.dto.AccessTokenDTO;
 import life.majiang.community.community.dto.GithubUser;
 import life.majiang.community.community.mapper.UserMapper;
@@ -13,6 +14,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 @Controller
@@ -45,6 +50,11 @@ public class AuthorizeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    Environment environment;
+
+    @Value("${server.port}")
+    private String localPort;
 
     @GetMapping("/callback")
     public  String callBack(@RequestParam(name = "code")String code,
@@ -90,6 +100,7 @@ public class AuthorizeController {
 
 
     @GetMapping("/login")
+    @ModelView
     public  String login(HttpServletRequest request){
         return "redirect:https://github.com/login/oauth/authorize?client_id=" + client_id + "&redirect_uri=" + redirect_uri + "&scope=user&state=1";
     }
