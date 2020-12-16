@@ -42,6 +42,9 @@ public class QuestionService {
             search = Arrays.stream(tags).collect(Collectors.joining("|"));
         }
 
+        QuestionExample example1 = new QuestionExample();
+        long count = questionMapper.countByExample(example1);
+
         PaginationDTO paginationDTO = new PaginationDTO();
 //        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
