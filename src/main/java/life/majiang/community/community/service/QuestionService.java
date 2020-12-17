@@ -42,14 +42,6 @@ public class QuestionService {
             search = Arrays.stream(tags).collect(Collectors.joining("|"));
         }
 
-        QuestionExample example1 = new QuestionExample();
-        long count = questionMapper.countByExample(example1);
-
-        Question question1 = new Question();
-        question1.setId((long)1);
-        question1.setViewCount(1);
-        questionExtMapper.incView(question1);
-
 
         PaginationDTO paginationDTO = new PaginationDTO();
 //        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
