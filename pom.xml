@@ -22,7 +22,7 @@
 		<profile>
 			<id>dev</id>
 			<properties>
-				<db.url>jdbc:mysql://localhost:3306/community?serverTimezone=UTC&amp;nullCatalogMeansCurrent=true</db.url>
+				<db.url>jdbc:mysql://localhost:1000/community?serverTimezone=UTC&amp;nullCatalogMeansCurrent=true</db.url>
 				<db.user>root</db.user>
 				<db.password>123456</db.password>
 			</properties>
@@ -33,7 +33,7 @@
 		<profile>
 			<id>profuction</id>
 			<properties>
-				<db.url>jdbc:mysql://localhost:3306/community?serverTimezone=UTC&amp;nullCatalogMeansCurrent=true</db.url>
+				<db.url>jdbc:mysql://localhost:10000/community?serverTimezone=UTC&amp;nullCatalogMeansCurrent=true</db.url>
 				<db.user>root</db.user>
 				<db.password>123456</db.password>
 			</properties>
