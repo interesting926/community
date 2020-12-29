@@ -42,9 +42,8 @@
                         </ul>
                     </li>
                     <li th:if="${session.user == null}">
-                        <a>
-                            <a th:href="@{/login}">
-                            <h4>登录</h4></a>
+                        <a th:href="@{/login}">
+                            <h4>登录</h4>
                         </a>
                     </li>
                 </ul>
