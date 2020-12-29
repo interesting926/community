@@ -41,6 +41,9 @@ public class QuestionService {
             String[] tags = search.split(" ");
             search = Arrays.stream(tags).collect(Collectors.joining("|"));
         }
+        else {
+            search =null;
+        }
 
 
         PaginationDTO paginationDTO = new PaginationDTO();
